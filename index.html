@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>Gravity Flip PRO v4</title>
+  <title>Gravity Flip Reactor v5</title>
   <style>
     * {
       margin: 0;
@@ -18,8 +18,8 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: #050811;
-      color: #ffffff;
+      background: #09070d;
+      color: #fff7ed;
       font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
       touch-action: none;
       position: fixed;
@@ -31,7 +31,7 @@
       height: 100vh;
     }
 
-    .top-hud {
+    .hud-bar {
       position: fixed;
       top: env(safe-area-inset-top);
       left: 0;
@@ -42,58 +42,59 @@
       align-items: center;
       z-index: 10;
       pointer-events: none;
-      background: linear-gradient(to bottom, rgba(5, 8, 17, 0.9), rgba(5, 8, 17, 0));
+      background: linear-gradient(to bottom, rgba(9, 7, 13, 0.92), rgba(9, 7, 13, 0));
     }
 
-    .hud-group {
+    .hud-left, .hud-right {
       display: flex;
       gap: 6px;
       align-items: center;
       flex-wrap: wrap;
     }
 
-    .pill {
-      background: rgba(15, 23, 42, 0.88);
-      border: 1px solid rgba(0, 240, 255, 0.4);
+    .tag {
+      background: rgba(24, 16, 36, 0.88);
+      border: 1px solid rgba(251, 146, 60, 0.45);
       padding: 5px 10px;
-      border-radius: 999px;
+      border-radius: 8px;
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 800;
+      letter-spacing: 0.4px;
     }
 
-    .pill span {
-      color: #00f0ff;
+    .tag span {
+      color: #fb923c;
     }
 
-    .level-pill {
-      background: linear-gradient(135deg, #ff007a, #7928ca);
+    .lv-tag {
+      background: linear-gradient(135deg, #f97316, #ec4899);
       border: none;
-      color: #fff;
+      color: #ffffff;
     }
 
-    .pro-badge {
-      background: rgba(0, 240, 255, 0.16);
-      border: 1px solid #00f0ff;
-      color: #00f0ff;
+    .v-tag {
+      background: rgba(16, 185, 129, 0.16);
+      border: 1px solid #34d399;
+      color: #6ee7b7;
       padding: 4px 8px;
-      border-radius: 999px;
+      border-radius: 8px;
       font-size: 10px;
       font-weight: 800;
     }
 
-    .ctrl-btn {
+    .btn-mini {
       pointer-events: auto;
       cursor: pointer;
-      background: rgba(15, 23, 42, 0.92);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      color: #fff;
+      background: rgba(24, 16, 36, 0.95);
+      border: 1px solid rgba(251, 146, 60, 0.5);
+      color: #fff7ed;
       padding: 5px 9px;
-      border-radius: 999px;
+      border-radius: 8px;
       font-size: 11px;
       font-weight: 700;
     }
 
-    .status-row {
+    .power-strip {
       position: fixed;
       top: 56px;
       left: 0;
@@ -105,49 +106,49 @@
       pointer-events: none;
     }
 
-    .badge-status {
+    .power-pill {
       padding: 3px 11px;
-      border-radius: 999px;
+      border-radius: 8px;
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 800;
       opacity: 0;
       transition: opacity 0.2s ease;
     }
 
-    .badge-status.active {
+    .power-pill.active {
       opacity: 1;
     }
 
-    .shield-badge {
-      background: rgba(56, 189, 248, 0.22);
-      border: 1px solid #38bdf8;
-      color: #bae6fd;
+    .p-shield {
+      background: rgba(52, 211, 153, 0.2);
+      border: 1px solid #34d399;
+      color: #a7f3d0;
     }
 
-    .x2-badge {
-      background: rgba(250, 204, 21, 0.22);
+    .p-x2 {
+      background: rgba(250, 204, 21, 0.2);
       border: 1px solid #facc15;
       color: #fef08a;
     }
   </style>
 </head>
 <body>
-  <div class="top-hud">
-    <div class="hud-group">
-      <div class="pill">SCORE <span id="scoreEl">0</span></div>
-      <div class="pill level-pill" id="levelEl">LV 1</div>
-      <div class="pro-badge">PRO v4</div>
+  <div class="hud-bar">
+    <div class="hud-left">
+      <div class="tag">PTS <span id="scoreEl">0</span></div>
+      <div class="tag lv-tag" id="levelEl">LV 1</div>
+      <div class="v-tag">REACTOR v5</div>
     </div>
-    <div class="hud-group">
-      <div class="pill">BEST <span id="bestEl">0</span></div>
-      <button class="ctrl-btn" id="zoomResetBtn">🔍 1.0x</button>
-      <button class="ctrl-btn" id="soundBtn">🔊 ON</button>
+    <div class="hud-right">
+      <div class="tag">TOP <span id="bestEl">0</span></div>
+      <button class="btn-mini" id="zoomBtn">🔍 1.0x</button>
+      <button class="btn-mini" id="soundBtn">🔊</button>
     </div>
   </div>
 
-  <div class="status-row">
-    <div class="badge-status shield-badge" id="shieldBadge">🛡️ SHIELD</div>
-    <div class="badge-status x2-badge" id="x2Badge">⚡ 2X SCORE</div>
+  <div class="power-strip">
+    <div class="power-pill p-shield" id="shieldEl">🛡️ SHIELD</div>
+    <div class="power-pill p-x2" id="x2El">⚡ 2X</div>
   </div>
 
   <canvas id="gameCanvas"></canvas>
@@ -159,13 +160,13 @@
     const scoreEl = document.getElementById("scoreEl");
     const bestEl = document.getElementById("bestEl");
     const levelEl = document.getElementById("levelEl");
+    const zoomBtn = document.getElementById("zoomBtn");
     const soundBtn = document.getElementById("soundBtn");
-    const zoomResetBtn = document.getElementById("zoomResetBtn");
-    const shieldBadge = document.getElementById("shieldBadge");
-    const x2Badge = document.getElementById("x2Badge");
+    const shieldEl = document.getElementById("shieldEl");
+    const x2El = document.getElementById("x2El");
 
-    // --- Sound ---
-    let soundEnabled = true;
+    // --- Audio ---
+    let soundOn = true;
     let audioCtx = null;
 
     function initAudio() {
@@ -174,229 +175,715 @@
           const AC = window.AudioContext || window.webkitAudioContext;
           if (AC) audioCtx = new AC();
         }
-        if (audioCtx && audioCtx.state === "suspended") {
-          audioCtx.resume();
-        }
+        if (audioCtx && audioCtx.state === "suspended") audioCtx.resume();
       } catch (e) {}
     }
 
-    function playTone(freqStart, freqEnd, duration, type, gainVal) {
-      if (!soundEnabled || !audioCtx) return;
+    function beep(f1, f2, dur, type, vol) {
+      if (!soundOn || !audioCtx) return;
       try {
-        const now = audioCtx.currentTime;
+        const t = audioCtx.currentTime;
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        osc.type = type || "sine";
-        osc.frequency.setValueAtTime(freqStart, now);
-        osc.frequency.exponentialRampToValueAtTime(Math.max(45, freqEnd), now + duration);
-        gain.gain.setValueAtTime(gainVal || 0.1, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+        osc.type = type || "triangle";
+        osc.frequency.setValueAtTime(f1, t);
+        osc.frequency.exponentialRampToValueAtTime(Math.max(45, f2), t + dur);
+        gain.gain.setValueAtTime(vol || 0.11, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + dur);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
-        osc.start(now);
-        osc.stop(now + duration);
+        osc.start(t);
+        osc.stop(t + dur);
       } catch (e) {}
     }
 
     soundBtn.addEventListener("pointerdown", (e) => {
       e.stopPropagation();
-      soundEnabled = !soundEnabled;
-      soundBtn.textContent = soundEnabled ? "🔊 ON" : "🔇 OFF";
+      soundOn = !soundOn;
+      soundBtn.textContent = soundOn ? "🔊" : "🔇";
     });
 
-    // --- User Pinch Zoom & Pan ---
-    let zoomScale = 1.0;
-    let camX = 0;
-    let camY = 0;
-    const minZoom = 0.65;
-    const maxZoom = 2.0;
+    // --- Zoom & Pan ---
+    let zoom = 1.0;
+    let panX = 0;
+    let panY = 0;
+    const MIN_ZOOM = 0.65;
+    const MAX_ZOOM = 2.0;
 
-    function updateZoomLabel() {
-      zoomResetBtn.textContent = "🔍 " + zoomScale.toFixed(1) + "x";
+    function syncZoomBtn() {
+      zoomBtn.textContent = "🔍 " + zoom.toFixed(1) + "x";
     }
 
-    zoomResetBtn.addEventListener("pointerdown", (e) => {
+    zoomBtn.addEventListener("pointerdown", (e) => {
       e.stopPropagation();
-      zoomScale = 1.0;
-      camX = 0;
-      camY = 0;
-      updateZoomLabel();
+      zoom = 1.0;
+      panX = 0;
+      panY = 0;
+      syncZoomBtn();
     });
 
     canvas.addEventListener("wheel", (e) => {
       e.preventDefault();
-      const delta = e.deltaY < 0 ? 0.1 : -0.1;
-      zoomScale = Math.max(minZoom, Math.min(maxZoom, zoomScale + delta));
-      updateZoomLabel();
+      zoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, zoom + (e.deltaY < 0 ? 0.1 : -0.1)));
+      syncZoomBtn();
     }, { passive: false });
 
-    // --- Game Dimensions ---
-    let width, height, topTrack, bottomTrack;
-    let gridOffset = 0;
+    // --- Canvas & Track ---
+    let W = 360, H = 640, topRail = 120, botRail = 540;
+    let scrollX = 0;
 
-    let gameState = "START";
+    let state = "START"; // START, PLAYING, OVER
     let score = 0;
-    let bestScore = Number(localStorage.getItem("gravity_flip_v4_best")) || 0;
+    let best = Number(localStorage.getItem("gf_reactor_v5_best")) || 0;
     let level = 1;
     let speed = 6.2;
-    let frameCount = 0;
-    let shakeTime = 0;
-    let flashAlpha = 0;
-    let doubleScoreTimer = 0;
+    let tick = 0;
+    let shake = 0;
+    let flash = 0;
+    let x2Timer = 0;
 
-    bestEl.textContent = Math.floor(bestScore);
+    bestEl.textContent = Math.floor(best);
 
-    const player = {
+    const core = {
       x: 95,
-      y: 300,
-      radius: 17,
+      y: 320,
+      r: 16,
       vy: 0,
-      gravityDir: 1,
-      hasShield: false,
-      trail: [],
-      rotation: 0,
-      ringPulse: 0
+      dir: 1,
+      shield: false,
+      angle: 0,
+      tail: []
     };
 
-    let obstacles = [];
-    let collectibles = [];
-    let particles = [];
-    let floatingTexts = [];
+    let hazards = [];
+    let pickups = [];
+    let sparks = [];
+    let popups = [];
 
-    const stars = [];
-    for (let i = 0; i < 90; i++) {
-      stars.push({
+    const bgDots = [];
+    for (let i = 0; i < 75; i++) {
+      bgDots.push({
         x: Math.random() * 1200,
         y: Math.random() * 1200,
-        r: Math.random() * 2.2 + 0.5,
-        speed: Math.random() * 0.5 + 0.15,
-        alpha: Math.random() * 0.6 + 0.2
+        s: Math.random() * 2 + 0.7,
+        spd: Math.random() * 0.45 + 0.15,
+        a: Math.random() * 0.45 + 0.15
       });
     }
 
-    function resizeCanvas() {
+    function resize() {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width = Math.floor(W * dpr);
+      canvas.height = Math.floor(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      topTrack = Math.max(115, height * 0.16);
-      bottomTrack = Math.min(height - 85, height - Math.max(95, height * 0.13));
+      topRail = Math.max(115, H * 0.16);
+      botRail = Math.min(H - 85, H - Math.max(95, H * 0.13));
 
-      player.x = Math.min(105, width * 0.22);
-      if (player.y + player.radius > bottomTrack) player.y = bottomTrack - player.radius;
-      if (player.y - player.radius < topTrack) player.y = topTrack + player.radius;
+      core.x = Math.min(105, W * 0.22);
+      if (core.y + core.r > botRail) core.y = botRail - core.r;
+      if (core.y - core.r < topRail) core.y = topRail + core.r;
     }
 
-    window.addEventListener("resize", resizeCanvas);
-    resizeCanvas();
+    window.addEventListener("resize", resize);
+    resize();
 
-    function setShield(active) {
-      player.hasShield = active;
-      shieldBadge.classList.toggle("active", active);
+    function setShieldUI(v) {
+      core.shield = v;
+      shieldEl.classList.toggle("active", v);
     }
 
-    function setDoubleScore(active) {
-      x2Badge.classList.toggle("active", active);
+    function setX2UI(v) {
+      x2El.classList.toggle("active", v);
     }
 
-    function resetGame() {
-      initAudio();
-      score = 0;
-      level = 1;
-      speed = Math.max(6.0, height * 0.016);
-      frameCount = 0;
-      shakeTime = 0;
-      flashAlpha = 0;
-      doubleScoreTimer = 0;
-      setDoubleScore(false);
-      obstacles = [];
-      collectibles = [];
-      particles = [];
-      floatingTexts = [];
-      player.y = bottomTrack - player.radius;
-      player.vy = 0;
-      player.gravityDir = 1;
-      player.trail = [];
-      setShield(false);
-      gameState = "PLAYING";
-      updateHUD();
-      playTone(350, 720, 0.13, "triangle", 0.12);
-    }
-
-    function flipGravity() {
-      initAudio();
-      if (gameState === "START" || gameState === "GAMEOVER") {
-        resetGame();
-        return;
+    function updateHUD() {
+      scoreEl.textContent = Math.floor(score);
+      levelEl.textContent = "LV " + level;
+      if (score > best) {
+        best = Math.floor(score);
+        bestEl.textContent = best;
+        try { localStorage.setItem("gf_reactor_v5_best", best); } catch (e) {}
       }
-      player.gravityDir *= -1;
-      player.vy = player.gravityDir * Math.max(15, height * 0.024);
-      flashAlpha = 0.08;
-      createParticles(player.x, player.y, "#00f0ff", 14, 7.5);
-      createParticles(player.x, player.y, "#ff007a", 6, 5.5);
-      playTone(
-        player.gravityDir === -1 ? 380 : 560,
-        player.gravityDir === -1 ? 720 : 290,
-        0.11,
-        "sine",
-        0.12
-      );
     }
 
-    function createParticles(x, y, color, count, spread) {
+    function spawnSparks(x, y, color, n, spread) {
       const sp = spread || 7;
-      for (let i = 0; i < count; i++) {
-        particles.push({
+      for (let i = 0; i < n; i++) {
+        sparks.push({
           x, y,
           vx: (Math.random() - 0.5) * sp,
           vy: (Math.random() - 0.5) * sp,
-          size: Math.random() * 4.5 + 2,
+          sz: Math.random() * 4.5 + 2,
           life: 1,
           color
         });
       }
     }
 
-    function addFloatingText(x, y, text, color) {
-      floatingTexts.push({
-        x, y, text,
-        color: color || "#ffd700",
-        life: 1
-      });
+    function addPopup(x, y, txt, color) {
+      popups.push({ x, y, txt, color: color || "#fbbf24", life: 1 });
     }
 
-    // Harder & More Varied Patterns
-    function spawnPattern() {
-      const trackSpan = Math.max(140, bottomTrack - topTrack);
-      const roll = Math.random();
+    function startNewRun() {
+      initAudio();
+      score = 0;
+      level = 1;
+      speed = Math.max(6.0, H * 0.016);
+      tick = 0;
+      shake = 0;
+      flash = 0;
+      x2Timer = 0;
+      setX2UI(false);
+      setShieldUI(false);
+      hazards = [];
+      pickups = [];
+      sparks = [];
+      popups = [];
+      core.y = botRail - core.r;
+      core.vy = 0;
+      core.dir = 1;
+      core.tail = [];
+      state = "PLAYING";
+      updateHUD();
+      beep(340, 680, 0.13, "sawtooth", 0.1);
+    }
 
-      // Pattern 1: Alternating Top & Bottom Zig-Zag Spikes (from Level 1+)
-      if (roll < 0.28) {
+    function flipDir() {
+      initAudio();
+      if (state === "START" || state === "OVER") {
+        startNewRun();
+        return;
+      }
+      core.dir *= -1;
+      core.vy = core.dir * Math.max(15, H * 0.024);
+      flash = 0.07;
+      spawnSparks(core.x, core.y, "#fb923c", 12, 7);
+      spawnSparks(core.x, core.y, "#34d399", 6, 5);
+      beep(core.dir === -1 ? 390 : 560, core.dir === -1 ? 740 : 280, 0.11, "triangle", 0.11);
+    }
+
+    // Harder multi-stage patterns
+    function spawnWave() {
+      const span = Math.max(140, botRail - topRail);
+      const r = Math.random();
+
+      if (r < 0.28) {
+        // Zig-zag alternating blades
         const count = level >= 3 ? 3 : 2;
-        const spikeW = Math.min(46, 32 + level * 1.1);
-        const spikeH = Math.min(72, 42 + level * 1.8);
-        let startTop = Math.random() < 0.5;
-        for (let c = 0; c < count; c++) {
-          const onTop = c % 2 === 0 ? startTop : !startTop;
-          obstacles.push({
-            type: "spike",
-            onTop,
-            x: width + 45 + c * (spikeW + 46),
-            y: onTop ? topTrack : bottomTrack,
-            w: spikeW,
-            h: spikeH
+        const w = Math.min(44, 30 + level * 1.1);
+        const h = Math.min(70, 40 + level * 1.8);
+        const firstTop = Math.random() < 0.5;
+        for (let i = 0; i < count; i++) {
+          const top = i % 2 === 0 ? firstTop : !firstTop;
+          hazards.push({
+            kind: "blade",
+            top,
+            x: W + 45 + i * (w + 44),
+            y: top ? topRail : botRail,
+            w, h
           });
         }
+      } else if (level >= 2 && r < 0.54) {
+        // Dual top+bottom gate
+        const w = Math.min(42, 28 + level);
+        const h = Math.min(62, 36 + level * 1.5);
+        const x0 = W + 50;
+        hazards.push({ kind: "blade", top: true, x: x0, y: topRail, w, h });
+        hazards.push({ kind: "blade", top: false, x: x0 + 26, y: botRail, w, h });
+      } else if (level >= 2 && r < 0.78) {
+        // Moving vertical block
+        const h = Math.min(76, span * 0.16);
+        hazards.push({
+          kind: "mover",
+          x: W + 50,
+          y: topRail + 30 + Math.random() * Math.max(25, span - h - 60),
+          w: 28, h,
+          vy: (Math.random() < 0.5 ? 1 : -1) * (2.1 + level * 0.25),
+          minY: topRail + 12,
+          maxY: botRail - h - 12
+        });
+      } else if (level >= 3) {
+        // Pulsing laser bar
+        hazards.push({
+          kind: "laser",
+          x: W + 50,
+          y: topRail + span * (0.26 + Math.random() * 0.48),
+          w: 22,
+          h: Math.min(120, span * 0.24),
+          phase: Math.random() * Math.PI * 2,
+          hot: true
+        });
+      } else {
+        const top = Math.random() < 0.5;
+        hazards.push({
+          kind: "blade",
+          top,
+          x: W + 45,
+          y: top ? topRail : botRail,
+          w: 36, h: 46
+        });
       }
-      // Pattern 2: Twin Gate (Top & Bottom spike pair with tight middle window, Level 2+)
-      else if (level >= 2 && roll < 0.52) {
-        const spikeW = Math.min(44, 30 + level);
-        const spikeH = Math.min(64, 38 + level * 1.5);
-        const xPos = width + 50;
-        obstacles.push({
-          type: "spike",
-          onTop: true,
-          
+
+      if (Math.random() < 0.78) {
+        const pick = Math.random();
+        let type = "gem";
+        if (!core.shield && level >= 2 && pick < 0.11) type = "shield";
+        else if (x2Timer <= 0 && level >= 2 && pick < 0.21) type = "x2";
+
+        pickups.push({
+          type,
+          x: W + 75,
+          y: Math.random() < 0.5 ? topRail + 42 : botRail - 42,
+          r: type === "gem" ? 10 : 13,
+          p: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    function hitCircleRect(cx, cy, cr, rx, ry, rw, rh) {
+      const nx = Math.max(rx, Math.min(cx, rx + rw));
+      const ny = Math.max(ry, Math.min(cy, ry + rh));
+      const dx = cx - nx;
+      const dy = cy - ny;
+      return dx * dx + dy * dy < (cr - 3.5) * (cr - 3.5);
+    }
+
+    function onHazardHit(idx) {
+      if (core.shield) {
+        setShieldUI(false);
+        shake = 11;
+        flash = 0.16;
+        const h = hazards[idx];
+        spawnSparks(h ? h.x : core.x, core.y, "#34d399", 24, 8.5);
+        addPopup(core.x, core.y - 24, "SHIELD BLOCK!", "#34d399");
+        beep(240, 560, 0.22, "square", 0.09);
+        if (h) hazards.splice(idx, 1);
+        return;
+      }
+      state = "OVER";
+      shake = 18;
+      flash = 0.25;
+      spawnSparks(core.x, core.y, "#f43f5e", 42, 9.5);
+      beep(320, 55, 0.38, "sawtooth", 0.14);
+      updateHUD();
+    }
+
+    function update() {
+      tick++;
+      const activeSpd = state === "PLAYING" ? speed : 1.8;
+      scrollX = (scrollX + activeSpd * 0.55) % 52;
+
+      for (let i = 0; i < bgDots.length; i++) {
+        const d = bgDots[i];
+        d.x -= activeSpd * d.spd;
+        if (d.x < -10) {
+          d.x = W + 10;
+          d.y = topRail + Math.random() * Math.max(40, botRail - topRail);
+        }
+      }
+
+      if (shake > 0) shake--;
+      if (flash > 0) flash = Math.max(0, flash - 0.012);
+      if (x2Timer > 0) {
+        x2Timer--;
+        if (x2Timer === 0) setX2UI(false);
+      }
+
+      for (let i = sparks.length - 1; i >= 0; i--) {
+        const s = sparks[i];
+        s.x += s.vx; s.y += s.vy; s.life -= 0.035;
+        if (s.life <= 0) sparks.splice(i, 1);
+      }
+
+      for (let i = popups.length - 1; i >= 0; i--) {
+        const p = popups[i];
+        p.y -= 1.2; p.life -= 0.024;
+        if (p.life <= 0) popups.splice(i, 1);
+      }
+
+      if (state !== "PLAYING") return;
+
+      const mult = x2Timer > 0 ? 2 : 1;
+      score += (0.25 + level * 0.035) * mult;
+
+      const nextLv = Math.floor(score / 320) + 1;
+      if (nextLv > level) {
+        level = nextLv;
+        speed = Math.min(16, Math.max(6.0, H * 0.016) + (level - 1) * 0.62);
+        spawnSparks(core.x, core.y, "#fb923c", 28, 8);
+        addPopup(W * 0.5, H * 0.34, "LEVEL " + level, "#fb923c");
+        beep(480, 960, 0.26, "triangle", 0.13);
+      }
+      updateHUD();
+
+      const gAcc = Math.max(1.25, H * 0.00185);
+      core.vy += core.dir * gAcc;
+      core.y += core.vy;
+      core.angle += core.dir * 0.16;
+
+      if (core.y + core.r >= botRail) { core.y = botRail - core.r; core.vy = 0; }
+      if (core.y - core.r <= topRail) { core.y = topRail + core.r; core.vy = 0; }
+
+      core.tail.push({ x: core.x, y: core.y });
+      if (core.tail.length > 16) core.tail.shift();
+
+      const interval = Math.max(30, Math.floor(76 - level * 3.2));
+      if (tick % interval === 0) spawnWave();
+
+      for (let i = hazards.length - 1; i >= 0; i--) {
+        const h = hazards[i];
+        h.x -= speed;
+
+        if (h.kind === "mover") {
+          h.y += h.vy;
+          if (h.y <= h.minY || h.y >= h.maxY) h.vy *= -1;
+          if (hitCircleRect(core.x, core.y, core.r, h.x, h.y, h.w, h.h)) {
+            onHazardHit(i); return;
+          }
+        } else if (h.kind === "laser") {
+          h.phase += 0.095;
+          h.hot = Math.sin(h.phase) > -0.1;
+          if (h.hot && hitCircleRect(core.x, core.y, core.r, h.x - h.w / 2, h.y - h.h / 2, h.w, h.h)) {
+            onHazardHit(i); return;
+          }
+        } else {
+          const hx = h.x + 6, hw = h.w - 12, hh = h.h - 8;
+          const hy = h.top ? h.y : h.y - hh;
+          if (hitCircleRect(core.x, core.y, core.r, hx, hy, hw, hh)) {
+            onHazardHit(i); return;
+          }
+        }
+        if (h.x + 120 < 0) hazards.splice(i, 1);
+      }
+
+      for (let i = pickups.length - 1; i >= 0; i--) {
+        const pk = pickups[i];
+        pk.x -= speed; pk.p += 0.14;
+        if (Math.hypot(core.x - pk.x, core.y - pk.y) < core.r + pk.r + 9) {
+          if (pk.type === "shield") {
+            setShieldUI(true);
+            spawnSparks(pk.x, pk.y, "#34d399", 20, 7);
+            addPopup(pk.x, pk.y - 16, "SHIELD!", "#34d399");
+            beep(520, 1040, 0.2, "sine", 0.11);
+          } else if (pk.type === "x2") {
+            x2Timer = 360;
+            setX2UI(true);
+            spawnSparks(pk.x, pk.y, "#facc15", 20, 7);
+            addPopup(pk.x, pk.y - 16, "2X PTS!", "#facc15");
+            beep(600, 1200, 0.22, "triangle", 0.12);
+          } else {
+            const pts = 50 * mult;
+            score += pts;
+            spawnSparks(pk.x, pk.y, "#fbbf24", 16, 6);
+            addPopup(pk.x, pk.y - 14, "+" + pts, "#fbbf24");
+            beep(720, 1140, 0.1, "sine", 0.1);
+            updateHUD();
+          }
+          pickups.splice(i, 1); continue;
+        }
+        if (pk.x < -40) pickups.splice(i, 1);
+      }
+    }
+
+    function drawStage() {
+      const bg = ctx.createLinearGradient(0, 0, 0, H);
+      bg.addColorStop(0, "#0b0812");
+      bg.addColorStop(0.5, "#150e24");
+      bg.addColorStop(1, "#0b0812");
+      ctx.fillStyle = bg;
+      ctx.fillRect(-400, -400, W + 800, H + 800);
+
+      // Diagonal reactor grid
+      ctx.strokeStyle = "rgba(251, 146, 60, 0.06)";
+      ctx.lineWidth = 1;
+      for (let x = -scrollX - 300; x < W + 300; x += 52) {
+        ctx.beginPath();
+        ctx.moveTo(x, topRail);
+        ctx.lineTo(x + 28, botRail);
+        ctx.stroke();
+      }
+
+      for (let i = 0; i < bgDots.length; i++) {
+        const d = bgDots[i];
+        ctx.fillStyle = "rgba(255, 237, 213, " + d.a + ")";
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, d.s, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Dual Amber & Emerald Rails
+      ctx.save();
+      ctx.strokeStyle = "#fb923c";
+      ctx.lineWidth = 4;
+      ctx.shadowBlur = 18;
+      ctx.shadowColor = "#fb923c";
+      ctx.beginPath(); ctx.moveTo(-400, topRail); ctx.lineTo(W + 400, topRail); ctx.stroke();
+
+      ctx.strokeStyle = "#34d399";
+      ctx.shadowColor = "#34d399";
+      ctx.beginPath(); ctx.moveTo(-400, botRail); ctx.lineTo(W + 400, botRail); ctx.stroke();
+      ctx.restore();
+    }
+
+    function draw() {
+      ctx.save();
+      const cx = W / 2, cy = H / 2;
+      ctx.translate(cx + panX, cy + panY);
+      ctx.scale(zoom, zoom);
+      ctx.translate(-cx, -cy);
+
+      if (shake > 0) {
+        const m = shake * 0.55;
+        ctx.translate((Math.random() - 0.5) * m, (Math.random() - 0.5) * m);
+      }
+
+      drawStage();
+
+      // Pickups
+      for (let i = 0; i < pickups.length; i++) {
+        const pk = pickups[i];
+        const g = pk.r + Math.sin(pk.p) * 3;
+        ctx.save();
+        ctx.translate(pk.x, pk.y);
+        if (pk.type === "shield") {
+          ctx.strokeStyle = "#34d399";
+          ctx.fillStyle = "rgba(52, 211, 153, 0.24)";
+          ctx.lineWidth = 2.5;
+          ctx.beginPath(); ctx.arc(0, 0, g, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        } else if (pk.type === "x2") {
+          ctx.strokeStyle = "#facc15";
+          ctx.fillStyle = "rgba(250, 204, 21, 0.24)";
+          ctx.lineWidth = 2.5;
+          ctx.beginPath(); ctx.arc(0, 0, g, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = "#fef08a";
+          ctx.font = "bold 10px sans-serif";
+          ctx.textAlign = "center"; ctx.textBaseline = "middle";
+          ctx.fillText("2X", 0, 1);
+        } else {
+          ctx.rotate(Math.PI / 4 + pk.p * 0.4);
+          ctx.fillStyle = "#fbbf24";
+          ctx.fillRect(-g * 0.65, -g * 0.65, g * 1.3, g * 1.3);
+        }
+        ctx.restore();
+      }
+
+      // Hazards
+      for (let i = 0; i < hazards.length; i++) {
+        const h = hazards[i];
+        ctx.save();
+        if (h.kind === "mover") {
+          ctx.fillStyle = "#f43f5e";
+          ctx.fillRect(h.x, h.y, h.w, h.h);
+          ctx.strokeStyle = "#fda4af";
+          ctx.lineWidth = 1.5;
+          ctx.strokeRect(h.x, h.y, h.w, h.h);
+        } else if (h.kind === "laser") {
+          if (h.hot) {
+            ctx.fillStyle = "#fb7185";
+            ctx.fillRect(h.x - h.w / 2, h.y - h.h / 2, h.w, h.h);
+          } else {
+            ctx.strokeStyle = "rgba(251, 113, 133, 0.55)";
+            ctx.lineWidth = 2;
+            ctx.strokeRect(h.x - h.w / 2, h.y - h.h / 2, h.w, h.h);
+          }
+        } else {
+          ctx.fillStyle = "#f43f5e";
+          ctx.beginPath();
+          if (h.top) {
+            ctx.moveTo(h.x, h.y); ctx.lineTo(h.x + h.w / 2, h.y + h.h); ctx.lineTo(h.x + h.w, h.y);
+          } else {
+            ctx.moveTo(h.x, h.y); ctx.lineTo(h.x + h.w / 2, h.y - h.h); ctx.lineTo(h.x + h.w, h.y);
+          }
+          ctx.closePath();
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      // Tail
+      for (let i = 0; i < core.tail.length; i++) {
+        const t = core.tail[i];
+        const ratio = (i + 1) / core.tail.length;
+        ctx.fillStyle = "rgba(251, 146, 60, " + (ratio * 0.35) + ")";
+        ctx.beginPath();
+        ctx.arc(t.x - (core.tail.length - i) * 2.4, t.y, core.r * ratio * 0.85, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Core Diamond / Reactor Orb
+      if (state !== "OVER") {
+        ctx.save();
+        ctx.translate(core.x, core.y);
+        ctx.rotate(core.angle);
+
+        ctx.fillStyle = "#fb923c";
+        ctx.beginPath();
+        ctx.moveTo(0, -core.r - 3);
+        ctx.lineTo(core.r + 3, 0);
+        ctx.lineTo(0, core.r + 3);
+        ctx.lineTo(-core.r - 3, 0);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = "#fff7ed";
+        ctx.beginPath();
+        ctx.arc(0, 0, core.r * 0.42, 0, Math.PI * 2);
+        ctx.fill();
+
+        if (core.shield) {
+          ctx.strokeStyle = "#34d399";
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.arc(0, 0, core.r + 10, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      for (let i = 0; i < sparks.length; i++) {
+        const s = sparks[i];
+        ctx.fillStyle = s.color;
+        ctx.globalAlpha = Math.max(0, s.life);
+        ctx.fillRect(s.x, s.y, s.sz, s.sz);
+      }
+      ctx.globalAlpha = 1;
+
+      for (let i = 0; i < popups.length; i++) {
+        const p = popups[i];
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, p.life);
+        ctx.fillStyle = p.color;
+        ctx.font = "bold 16px Segoe UI, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(p.txt, p.x, p.y);
+        ctx.restore();
+      }
+
+      if (flash > 0) {
+        ctx.fillStyle = "rgba(255, 247, 237, " + flash + ")";
+        ctx.fillRect(-400, -400, W + 800, H + 800);
+      }
+      ctx.restore();
+
+      if (state === "START") {
+        drawBanner("REACTOR v5", "1 Tap = Flip • 2 Fingers = Zoom • Endless Levels", "TAP TO LAUNCH");
+      } else if (state === "OVER") {
+        drawBanner("CORE BREACHED", "PTS: " + Math.floor(score) + " • LV " + level, "TAP TO RELAUNCH");
+      }
+    }
+
+    function drawBanner(title, line1, line2) {
+      ctx.fillStyle = "rgba(9, 7, 13, 0.72)";
+      ctx.fillRect(0, 0, W, H);
+      const bw = Math.min(410, W * 0.88);
+      const bh = 180;
+      const bx = (W - bw) / 2;
+      const by = (H - bh) / 2;
+
+      ctx.fillStyle = "rgba(24, 16, 36, 0.96)";
+      ctx.strokeStyle = "#fb923c";
+      ctx.lineWidth = 2;
+      ctx.fillRect(bx, by, bw, bh);
+      ctx.strokeRect(bx, by, bw, bh);
+
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#fff7ed";
+      ctx.font = "800 22px Segoe UI, sans-serif";
+      ctx.fillText(title, W / 2, by + 54);
+
+      ctx.fillStyle = "#fed7aa";
+      ctx.font = "600 13px Segoe UI, sans-serif";
+      ctx.fillText(line1, W / 2, by + 94);
+
+      ctx.fillStyle = "#34d399";
+      ctx.font = "800 14px Segoe UI, sans-serif";
+      ctx.fillText(line2, W / 2, by + 136);
+    }
+
+    // --- Touch: 1 Finger = Flip, 2 Fingers = Pinch Zoom & Pan ---
+    const touches = new Map();
+    let pinchStartDist = null;
+    let pinchStartZoom = 1.0;
+    let midPrevX = null;
+    let midPrevY = null;
+
+    canvas.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        const t = e.changedTouches[i];
+        touches.set(t.identifier, { x: t.clientX, y: t.clientY });
+      }
+      if (touches.size === 2) {
+        const pts = Array.from(touches.values());
+        pinchStartDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+        pinchStartZoom = zoom;
+        midPrevX = (pts[0].x + pts[1].x) / 2;
+        midPrevY = (pts[0].y + pts[1].y) / 2;
+      } else if (touches.size === 1) {
+        flipDir();
+      }
+    }, { passive: false });
+
+    canvas.addEventListener("touchmove", (e) => {
+      e.preventDefault();
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        const t = e.changedTouches[i];
+        if (touches.has(t.identifier)) {
+          touches.set(t.identifier, { x: t.clientX, y: t.clientY });
+        }
+      }
+      if (touches.size === 2 && pinchStartDist) {
+        const pts = Array.from(touches.values());
+        const d = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+        zoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, pinchStartZoom * (d / pinchStartDist)));
+        syncZoomBtn();
+
+        const mx = (pts[0].x + pts[1].x) / 2;
+        const my = (pts[0].y + pts[1].y) / 2;
+        if (midPrevX !== null && midPrevY !== null) {
+          panX += mx - midPrevX;
+          panY += my - midPrevY;
+        }
+        midPrevX = mx;
+        midPrevY = my;
+      }
+    }, { passive: false });
+
+    function releaseTouch(e) {
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        touches.delete(e.changedTouches[i].identifier);
+      }
+      if (touches.size < 2) {
+        pinchStartDist = null;
+        midPrevX = null;
+        midPrevY = null;
+      }
+    }
+
+    canvas.addEventListener("touchend", releaseTouch, { passive: false });
+    canvas.addEventListener("touchcancel", releaseTouch, { passive: false });
+
+    canvas.addEventListener("mousedown", (e) => {
+      if (e.button === 0 && touches.size === 0) flipDir();
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.code === "Space" || e.code === "ArrowUp" || e.code === "ArrowDown") {
+        e.preventDefault();
+        flipDir();
+      }
+    });
+
+    function loop() {
+      update();
+      draw();
+      requestAnimationFrame(loop);
+    }
+
+    loop();
+  </script>
+</body>
+</html>
