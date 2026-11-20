@@ -141,7 +141,7 @@
     </div>
     <div class="hud-box">
       <div class="chip">BEST <span id="bestEl">0</span></div>
-      <button class="action-btn" id="zoomBtn">🔍 1.0x</button>
+      <button class="action-btn" id="zoomBtn">🔍 0.7x</button>
       <button class="action-btn" id="soundBtn">🔊</button>
     </div>
   </div>
@@ -216,7 +216,7 @@
 
     zoomBtn.addEventListener("pointerdown", (e) => {
       e.stopPropagation();
-      zoom = 1.0;
+      zoom = 0.7;
       panX = 0;
       panY = 0;
       syncZoomBtn();
